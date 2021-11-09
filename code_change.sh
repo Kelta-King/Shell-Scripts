@@ -1,5 +1,6 @@
 # This is can be used to change the variable names in code
-filename=sample.php
+echo "Enter filename"
+read filename
 
 if [ ! -f $filename ];
 then
@@ -7,7 +8,10 @@ then
     exit 0
 fi
 
-old_var='$var'
-new_var='$hey'
+echo "Enter old variable name"
+read old_var
+
+echo "Enter new variable name"
+read new_var
 
 sed "s/$old_var/$new_var/" $filename > output.php
