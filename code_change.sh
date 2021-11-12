@@ -1,6 +1,7 @@
 # This is can be used to change the variable names in code
-echo "Enter filename"
-read filename
+# echo "Enter filename"
+# read filename
+filename=sample.php
 
 if [ ! -f $filename ];
 then
@@ -8,10 +9,26 @@ then
     exit 0
 fi
 
-echo "Enter old variable name"
-read old_var
+# Array of old and new variables
+old_vars=('var')
+new_vars=('hey')
 
-echo "Enter new variable name"
-read new_var
+# Checking if both array's lengths are same
+if [ ! ${#old_vars[@]} -eq ${#new_vars[@]} ];
+then
+    echo "Old variable and new variable counts are different"
+    exit 0
+fi
 
-sed "s/$old_var/$new_var/" $filename > output.php
+# Adds spaces between for the {}, () brackets
+val=$(sed "s/(/ (/;s/){/) {/;s/{/ {/" $filename)
+
+# Looping through all the old variables
+for ((i=0; i<${#old_vars[@]}; i++ ))
+do
+    old=${old_vars[$i]}
+    new=${new_vars[$i]}
+    val=$(sed "s/$old/$new/g" <<< "$val")
+done
+
+sed '' <<< "$val" > output.php
